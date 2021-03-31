@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} News Hwack{% endblock %}
+
+{% block body %}
+    <h1>Fils d'actualité</h1>
+    {% for hwack in hwacks %}
+        <h2>{{ hwack.titre }}</h2>
+        <div>{{ hwack.content }}</div>
+    {% endfor %}
+    {{ knp_pagination_render(articles) }}
+
+
+{% endblock %}

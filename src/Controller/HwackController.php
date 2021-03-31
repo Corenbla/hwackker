@@ -5,25 +5,48 @@ namespace App\Controller;
 use App\Entity\Hwack;
 use App\Form\HwackType;
 use App\Repository\HwackRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/hwack")
+ * @Route("/user")
  */
 class HwackController extends AbstractController
 {
     /**
      * @Route("/", name="hwack_index", methods={"GET"})
+     * @param Request $request
+     * @param PaginatorInterface $paginator
      * @param HwackRepository $hwackRepository
      * @return Response
      */
-    public function index(HwackRepository $hwackRepository): Response
+    public function index( Request $request, PaginatorInterface  $paginator,HwackRepository $hwackRepository): Response
     {
+        $isAdmin= false;
+        $isFollower = false;
+        $page = $request->query->get('page') ?? 1;
+        $search = $request->query->get('search') ?? null ;
+        $username = $request->query->get('username') ?? "";
+        $private = $isAdmin || $isFollower ? $request->query->get('private') ?? false : false ;
+
+        if(!empty($search)){
+            $this->getHwacksByContent($search,$hwackRepository,$paginator);
+        }
+//        if(!empty($username)){
+//            //TODO if username is follower
+//            $this->getUserProfil($username, $isFollower,$hwackRepository);
+//        }
+        if(!empty($page)){
+            $this->getHwacksByContent($page,$hwackRepository,$paginator);
+        }
+        $allHwacks = $hwackRepository->findBy(['isPrivate'=>$private],['created_at'=>'desc']);
+        $hwacks = $paginator->paginate($allHwacks,$request->query->getInt('page', $page),100);
+
         return $this->render('hwack/index.html.twig', [
-            'hwacks' => $hwackRepository->findAll(),
+            'hwacks' => $hwacks,
         ]);
     }
 
@@ -104,5 +127,37 @@ class HwackController extends AbstractController
         return $this->redirectToRoute('hwack_index');
     }
 
+    /**
+     * @param int $page
+     * @param HwackRepository $hwackRepository
+     * @param PaginatorInterface $paginator
+     * @return Response
+     */
+    public function getHwacksPaginate(int $page,HwackRepository $hwackRepository, PaginatorInterface $paginator): Response
+    {
+        //TODO if user isConnected
+        $allHwacks = $hwackRepository->findBy(['isPrivate'=>false],['created_at'=>'desc']);
+        $hwacks = $paginator->paginate($allHwacks,$page,100);
+        return $this->render('hwack/news.html.twig', [
+            'hwacks' => $hwacks,
+        ]);
+    }
+
+    /**
+     * @param String $search
+     * @param HwackRepository $hwackRepository
+     * @param PaginatorInterface $paginator
+     * @return Response
+     */
+    public function getHwacksByContent(String $search,HwackRepository $hwackRepository, PaginatorInterface $paginator): Response
+    {
+        $allHwacks = $hwackRepository->findByContentLike($search);
+        $hwacks = $paginator->paginate($allHwacks,1,100);
+        return $this->render('hwack/show.html.twig', [
+            'hwacks' => $hwacks,
+        ]);
+    }
+
+//    public function getUserProfile()
 
 }

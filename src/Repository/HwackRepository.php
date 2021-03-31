@@ -19,22 +19,21 @@ class HwackRepository extends ServiceEntityRepository
         parent::__construct($registry, Hwack::class);
     }
 
-    // /**
-    //  * @return Hwack[] Returns an array of Hwack objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param $value
+     * @return Hwack[] Returns an array of Hwack objects
+     */
+    public function findByContentLike(String $value): array
     {
         return $this->createQueryBuilder('h')
-            ->andWhere('h.exampleField = :val')
+            ->andWhere('h.content LIKE %:val% and isPrivate=true')
             ->setParameter('val', $value)
-            ->orderBy('h.id', 'ASC')
-            ->setMaxResults(10)
+            ->orderBy('h.id', 'DESC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Hwack
