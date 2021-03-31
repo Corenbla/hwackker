@@ -27,6 +27,11 @@ class Country
      */
     private $isoCode;
 
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
