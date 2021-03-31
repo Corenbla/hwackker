@@ -34,7 +34,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
 
             $user
-                ->setUsername($faker->userName)
+                ->setUsername($i !== 0 ? $faker->userName : 'admin')
                 ->setBirthDate($faker->dateTime('10 years ago'))
                 ->setFacebookUrl($faker->url)
                 ->setTwitterUrl($faker->url)
