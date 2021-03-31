@@ -12,6 +12,8 @@
         {% block javascripts %}
             {#{{ encore_entry_script_tags('app') }}#}
         {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('imgs/favicon.ico') }}" />
+        <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.css" rel="stylesheet">
     </head>
     <body>
         {% block body %}{% endblock %}
