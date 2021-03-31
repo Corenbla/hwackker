@@ -40,7 +40,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isAdmin;
+    private $isAdmin = false;
 
     /**
      * @ORM\Column(type="date", nullable=true)
@@ -68,7 +68,7 @@ class User implements UserInterface
     private $profilePicture;
 
     /**
-     * @ORM\OneToMany(targetEntity=Hwack::class, mappedBy="author", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Hwack::class, mappedBy="author", orphanRemoval=true, cascade="persist")
      */
     private $hwacks;
 
@@ -78,7 +78,7 @@ class User implements UserInterface
     private $followers;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Country::class)
+     * @ORM\ManyToOne(targetEntity=Country::class, cascade="persist")
      * @ORM\JoinColumn(nullable=false)
      */
     private $country;
