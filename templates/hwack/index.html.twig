@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hwack index{% endblock %}
+
+{% block body %}
+    <h1>Hwack index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Content</th>
+                <th>IsPrivate</th>
+                <th>CreatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for hwack in hwacks %}
+            <tr>
+                <td>{{ hwack.id }}</td>
+                <td>{{ hwack.content }}</td>
+                <td>{{ hwack.isPrivate ? 'Yes' : 'No' }}</td>
+                <td>{{ hwack.createdAt ? hwack.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('hwack_show', {'id': hwack.id}) }}">show</a>
+                    <a href="{{ path('hwack_edit', {'id': hwack.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('hwack_new') }}">Create new</a>
+{% endblock %}

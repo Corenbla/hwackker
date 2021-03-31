@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Hwack{% endblock %}
+
+{% block body %}
+    <h1>Edit Hwack</h1>
+
+    {{ include('hwack/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('hwack_index') }}">back to list</a>
+
+    {{ include('hwack/_delete_form.html.twig') }}
+{% endblock %}
