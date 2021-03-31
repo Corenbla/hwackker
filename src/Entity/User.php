@@ -262,11 +262,9 @@ class User implements UserInterface
 
     public function removeHwack(Hwack $hwack): self
     {
-        if ($this->hwacks->removeElement($hwack)) {
-            // set the owning side to null (unless already changed)
-            if ($hwack->getAuthor() === $this) {
-                $hwack->setAuthor(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->hwacks->removeElement($hwack) && $hwack->getAuthor() === $this) {
+            $hwack->setAuthor(null);
         }
 
         return $this;

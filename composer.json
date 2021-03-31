@@ -3,6 +3,8 @@
     "license": "proprietary",
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "name": "hwackker",
+    "description": "",
     "require": {
         "php": ">=7.2.5",
         "ext-ctype": "*",
