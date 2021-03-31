@@ -26,8 +26,8 @@ class HwackRepository extends ServiceEntityRepository
     public function findByContentLike(String $value): array
     {
         return $this->createQueryBuilder('h')
-            ->andWhere('h.content LIKE %:val% and isPrivate=true')
-            ->setParameter('val', $value)
+            ->andWhere('h.content LIKE :val AND h.isPrivate=false')
+            ->setParameter('val', '%'.$value.'%')
             ->orderBy('h.id', 'DESC')
             ->getQuery()
             ->getResult()

@@ -32,21 +32,30 @@ class HwackController extends AbstractController
         $username = $request->query->get('username') ?? "";
         $private = $isAdmin || $isFollower ? $request->query->get('private') ?? false : false ;
 
+
         if(!empty($search)){
-            $this->getHwacksByContent($search,$hwackRepository,$paginator);
+            $allHwacks = $hwackRepository->findByContentLike($search);
+            $hwacks = $paginator->paginate($allHwacks,1,100);
+            return $this->render('hwack/news.html.twig', [
+                'hwacks' => $hwacks,
+            ]);
         }
 //        if(!empty($username)){
 //            //TODO if username is follower
 //            $this->getUserProfil($username, $isFollower,$hwackRepository);
 //        }
         if(!empty($page)){
-            $this->getHwacksByContent($page,$hwackRepository,$paginator);
+            $allHwacks = $hwackRepository->findBy(['isPrivate'=>$private],['createdAt'=>'desc']);
+            $hwacks = $paginator->paginate($allHwacks,$page,100);
+            return $this->render('hwack/news.html.twig', [
+                'hwacks' => $hwacks,
+            ]);
         }
-        $allHwacks = $hwackRepository->findBy(['isPrivate'=>$private],['created_at'=>'desc']);
-        $hwacks = $paginator->paginate($allHwacks,$request->query->getInt('page', $page),100);
+//        $allHwacks = $hwackRepository->findBy(['isPrivate'=>$private],['createdAt'=>'desc']);
+//        $hwacks = $paginator->paginate($allHwacks,$request->query->getInt('page', $page),100);
 
-        return $this->render('hwack/index.html.twig', [
-            'hwacks' => $hwacks,
+        return $this->render('user/base.html.twig', [
+
         ]);
     }
 
@@ -127,21 +136,7 @@ class HwackController extends AbstractController
         return $this->redirectToRoute('hwack_index');
     }
 
-    /**
-     * @param int $page
-     * @param HwackRepository $hwackRepository
-     * @param PaginatorInterface $paginator
-     * @return Response
-     */
-    public function getHwacksPaginate(int $page,HwackRepository $hwackRepository, PaginatorInterface $paginator): Response
-    {
-        //TODO if user isConnected
-        $allHwacks = $hwackRepository->findBy(['isPrivate'=>false],['created_at'=>'desc']);
-        $hwacks = $paginator->paginate($allHwacks,$page,100);
-        return $this->render('hwack/news.html.twig', [
-            'hwacks' => $hwacks,
-        ]);
-    }
+
 
     /**
      * @param String $search

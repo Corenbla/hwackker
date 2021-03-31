@@ -5,10 +5,10 @@
 {% block body %}
     <h1>Fils d'actualité</h1>
     {% for hwack in hwacks %}
-        <h2>{{ hwack.titre }}</h2>
+        <h2>{{ hwack.author.username }}</h2>
         <div>{{ hwack.content }}</div>
     {% endfor %}
-    {{ knp_pagination_render(articles) }}
+    {{ knp_pagination_render(hwacks) }}
 
 
 {% endblock %}
