@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Hwack;
 use App\Entity\HwackImage;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -15,27 +16,33 @@ class HwackFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');
+        $batchSize = 20;
 
-        for ($i = 0; $i < 100; $i++) {
-            $hwack = new Hwack();
-            $hwack
-                ->setIsPrivate($faker->boolean(15))
-                ->setContent($faker->realText(255))
-                ->setAuthor(
-                    $this->getReference(sprintf(
+        for ($i = 0; $i < 10; $i++) {
+            for ($j = 0; $j < 100; $j++) {
+                $hwack = new Hwack();
+                $hwack
+                    ->setIsPrivate($faker->boolean(15))
+                    ->setContent($faker->realText(255))
+                    ->setAuthor($this->getReference(sprintf(
                         '%s%d',
                         UserFixtures::USER_REFERENCE,
-                        random_int(0, 9)
-                    ))
-                )
-            ;
+                        $i
+                    )))
+                ;
 
-            $this->addImage($hwack, $faker, $manager);
+                $this->addImage($hwack, $faker, $manager);
 
-            $manager->persist($hwack);
+                $manager->persist($hwack);
+                if ($j % $batchSize === 0) {
+                    $manager->flush();
+                    $manager->clear();
+                }
+            }
+
+            $manager->flush();
+            $manager->clear();
         }
-
-        $manager->flush();
     }
 
     public function getDependencies()

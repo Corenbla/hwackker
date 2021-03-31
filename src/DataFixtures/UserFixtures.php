@@ -55,6 +55,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         }
 
         $manager->flush();
+        $manager->clear();
     }
 
     private function addImage(User $user, Generator $faker, ObjectManager $manager)

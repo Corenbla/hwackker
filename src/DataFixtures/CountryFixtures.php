@@ -27,5 +27,6 @@ class CountryFixtures extends Fixture
         }
 
         $manager->flush();
+        $manager->clear();
     }
 }
