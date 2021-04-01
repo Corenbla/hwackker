@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -14,14 +13,6 @@ use App\Security\AppAuthenticator;
 
 class RegisterController extends AbstractController
 {
-
-    public function index(): Response
-    {
-        return $this->render('register/index.html.twig', [
-            'controller_name' => 'RegisterController',
-        ]);
-    }
-
     /**
      * @Route("/register", name="register")
      */
@@ -57,8 +48,9 @@ class RegisterController extends AbstractController
         }
 
         return $this->render(
-            'registration/register.html.twig',
-            ['registrationForm' => $form->createView()]
+            'registration/register.html.twig', [
+                'registrationForm' => $form->createView(),
+            ]
         );
     }
 }
