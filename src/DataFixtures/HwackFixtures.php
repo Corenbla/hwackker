@@ -4,7 +4,6 @@ namespace App\DataFixtures;
 
 use App\Entity\Hwack;
 use App\Entity\HwackImage;
-use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -15,7 +14,7 @@ class HwackFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        $faker = Factory::create('fr_FR');
+        $faker = Factory::create();
         $batchSize = 20;
 
         for ($i = 0; $i < 10; $i++) {

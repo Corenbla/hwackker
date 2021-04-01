@@ -4,36 +4,36 @@
 {% endblock %}
 
 {% block body %}
-	<script type="text/javascript" src="{{ asset('js/recaptcha.js') }}"></script>
-	<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?onload=onGoogleReCaptchaApiLoad&render=explicit&hl={{ app.request.locale }}" async defer></script>
+    <script type="text/javascript" src="{{ asset('js/recaptcha.js') }}"></script>
+    <script type="text/javascript" src="https://www.google.com/recaptcha/api.js?onload=onGoogleReCaptchaApiLoad&render=explicit&hl={{ app.request.locale }}" async defer></script>
 
-	<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-		<div class="max-w-md w-full space-y-8">
-			<div>
-				<a href="{{ path('home') }}"><img class="mx-auto h-16 w-auto" src="imgs/logo.svg" alt="Logo"></a>
-				<h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-					Register
-				</h2>
-			</div>
-			{% for flashError in app.flashes('verify_email_error') %}
-				<div class="alert alert-danger" role="alert">{{ flashError }}</div>
-			{% endfor %}
+    <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8">
+            <div>
+                <a href="{{ path('home') }}"><img class="mx-auto h-16 w-auto" src="imgs/logo.svg" alt="Logo"></a>
+                <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                    Register
+                </h2>
+            </div>
+            {% for flashError in app.flashes('verify_email_error') %}
+                <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+            {% endfor %}
 
             <div class="rounded-md shadow-sm">
 
                 {{ form_start(registrationForm) }}
 
-				{{ form_row(registrationForm.username) }}
-				{{ form_row(registrationForm.birthDate) }}
-				{{ form_row(registrationForm.facebookUrl) }}
-				{{ form_row(registrationForm.twitterUrl) }}
-				{{ form_row(registrationForm.email) }}
-				{{ form_row(registrationForm.country) }}
-				{{ form_row(registrationForm.captcha) }}
-				{{ form_row(registrationForm.plainPassword, {label: 'Password' }) }}
-				<button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-					Register
-				</button>
+                {{ form_row(registrationForm.username) }}
+                {{ form_row(registrationForm.birthDate) }}
+                {{ form_row(registrationForm.facebookUrl) }}
+                {{ form_row(registrationForm.twitterUrl) }}
+                {{ form_row(registrationForm.email) }}
+                {{ form_row(registrationForm.country) }}
+                {{ form_row(registrationForm.captcha) }}
+                {{ form_row(registrationForm.plainPassword, {label: 'Password' }) }}
+                <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Register
+                </button>
 
                 {{ form_end(registrationForm) }}
             </div>
@@ -56,11 +56,11 @@
 {% endblock %}
 
 {% block form_errors %}
-	{%- if errors|length > 0 -%}
-		<ul>
-			{%- for error in errors -%}
-				<li class="flex justify-center items-center m-1 font-medium py-1 px-2 bg-white rounded-md text-red-700 bg-red-100 border border-red-300 ">{{ error.message }}</li>
-			{%- endfor -%}
-		</ul>
-	{%- endif -%}
+    {%- if errors|length > 0 -%}
+        <ul>
+            {%- for error in errors -%}
+                <li class="flex justify-center items-center m-1 font-medium py-1 px-2 bg-white rounded-md text-red-700 bg-red-100 border border-red-300 ">{{ error.message }}</li>
+            {%- endfor -%}
+        </ul>
+    {%- endif -%}
 {% endblock form_errors %}

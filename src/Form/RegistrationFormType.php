@@ -26,7 +26,8 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('username', null, [
                 'constraints' => [
-                    new Length(null, 2, 12)
+                    new NotNull(),
+                    new Length(null, 2, 12),
                 ],
             ])
             ->add('birthDate', DateType::class, [
