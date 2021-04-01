@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Hwack;
 use App\Entity\User;
+use App\Form\HwackType;
 use App\Repository\HwackRepository;
 use App\Repository\UserRepository;
 use App\Service\UserService;
@@ -70,9 +72,12 @@ class UserController extends AbstractController
                 'hwacks' => $hwacks,
             ]);
         }
-        $hwacks = $currentUser->getHwacks();
-
+        $hwacks = array_reverse($currentUser->getHwacks()->toArray());
+        $hwack = new Hwack();
+        $form = $this->createForm(HwackType::class, $hwack,['action' => $this->generateUrl('hwack_new'),]);
         return $this->render('user/index.html.twig', [
+            'hwack' => $hwack,
+            'form' => $form->createView(),
             'user'=> $currentUser,
             'hwacks'=> $hwacks
         ]);
@@ -92,4 +97,5 @@ class UserController extends AbstractController
 
         return false;
     }
+
 }

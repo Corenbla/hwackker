@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ app.user.username }}!
+{% block title %}Hello {{ user.username }}!
 {% endblock %}
 
 {% block body %}
@@ -28,29 +28,12 @@
 	<div class="container mx-auto px-4 py-10">
 		<div class="md:flex -mx-4">
 			<div class="w-2/4 px-4">
-				<form class="bg-white rounded-lg shadow px-4 py-4 mb-8" action="" method="POST">
-					<input type="hidden" name="user_id" value="">
-
-					<textarea name="content" id="hwack_editor" class="mb-2 bg-gray-100 focus:outline-none focus:shadow-outline border border-transparent rounded-lg py-2 px-4 block w-full appearance-none leading-normal placeholder-gray-700" rows="3" placeholder="What's happening..."></textarea>
-
-					<input multiple name="image" id="image" class="" type="file">
-
-					<br>
-
-					<label for="private" class="mt-6">
-						Private
-						<input type="checkbox" name="private">
-					</label>
-
-					<div class="flex items-center justify-end">
-						<button type="submit" class="bg-blue-500 py-2 px-3 font-bold text-white rounded-md">
-							Send Hwack
-						</button>
-					</div>
-				</form>
+				{% if app.user.id == user.id %}
+					{{ include('hwack/_form.html.twig') }}
+				{% endif %}
 
 				<div class="bg-white rounded-lg shadow mb-8">
-					@foreach($hwacks as $hwack)
+					{% for hwack in hwacks %}
 					<div class="px-6 py-5 border-b border-gray-200 last:border-none">
 						<div class="flex w-full">
 							<div class="flex-shrink-0 mr-5">
@@ -60,24 +43,24 @@
 							</div>
 							<div class="flex-1">
 								<div>
-									<a href="/user?username=" class="text-gray-600 font-bold"></a>
+									<a href="/user?username={{ user.username }}" class="text-gray-600 font-bold"></a>
 									<span class="mx-1 text-gray-500">&bull;</span>
 									<span class="text-gray-600"></span>
 								</div>
 
 								<div class="mb-4">
-									<p class="text-gray-700">{!! $hwack->content !!}</p>
+									<p class="text-gray-700">{{ hwack.content|striptags|markdown }}</p>
 								</div>
 
-								@if($hwack->image)
+								{% if hwack.hwackImage is not null  %}
 								<div class="relative w-auto mb-2 border rounded-lg relative bg-gray-100 mb-4 shadow-inset overflow-hidden">
 									<img src="" alt="Hwack image">
 								</div>
-								@endif
+								{% endif %}
 							</div>
 						</div>
 					</div>
-					@endforeach
+					{% endfor %}
 				</div>
 			</div>
 
@@ -89,6 +72,7 @@
 
 					<div></div>
 				</div>
+				{% if app.user.id == user.id %}
 
 				<div class="bg-white rounded-lg shadow mb-8">
 					<div class="px-6 py-3 border-b border-gray-200">
@@ -97,6 +81,7 @@
 
 					<div></div>
 				</div>
+				{% endif %}
 			</div>
 		</div>
 	</div>

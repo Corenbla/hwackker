@@ -3,9 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Hwack;
+use App\Entity\User;
 use App\Form\HwackType;
-use App\Repository\HwackRepository;
-use Knp\Component\Pager\PaginatorInterface;
+use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/hwack")
+ * @method User getUser()
+
  */
 class HwackController extends AbstractController
 {
@@ -30,26 +32,30 @@ class HwackController extends AbstractController
     /**
      * @Route("/new", name="hwack_new", methods={"GET","POST"})
      * @param Request $request
+     * @param MarkdownParserInterface $markdownParser
      * @return Response
      */
-    public function new(Request $request): Response
+    public function new(Request $request,MarkdownParserInterface $markdownParser): Response
     {
         $hwack = new Hwack();
         $form = $this->createForm(HwackType::class, $hwack);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $hwack->setContent($markdownParser->transformMarkdown($hwack->getContent()));
+            $hwack->setAuthor($this->getUser());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($hwack);
             $entityManager->flush();
 
-            return $this->redirectToRoute('hwack_index');
+            return $this->redirectToRoute('user');
         }
+        return $this->redirectToRoute('user');
 
-        return $this->render('hwack/new.html.twig', [
-            'hwack' => $hwack,
-            'form' => $form->createView(),
-        ]);
+//        return $this->render('hwack/new.html.twig', [
+////            'hwack' => $hwack,
+//            'form' => $form->createView(),
+//        ]);
     }
 
     /**
