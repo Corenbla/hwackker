@@ -25,12 +25,14 @@ class HwackController extends AbstractController
      */
     public function index( Request $request, PaginatorInterface  $paginator,HwackRepository $hwackRepository): Response
     {
-        $isAdmin= false;
-        $isFollower = false;
-        $page = $request->query->get('page') ?? 1;
+        $currentUser = ( $this->getUser() instanceof User) ? $this->getUser() : null;
+        if(is_null($currentUser)){
+            $this->redirectToRoute("home");
+        }
+        $isAdmin = ( $this->getUser() instanceof User) ? $this->getUser()->getIsAdmin() : false;
+        $page = $request->query->get('page') ?? null ;
         $search = $request->query->get('search') ?? null ;
-        $username = $request->query->get('username') ?? "";
-        $private = $isAdmin || $isFollower ? $request->query->get('private') ?? false : false ;
+        $username = $request->query->get('username') ?? null ;
 
 
         if(!empty($search)){
@@ -40,10 +42,19 @@ class HwackController extends AbstractController
                 'hwacks' => $hwacks,
             ]);
         }
-//        if(!empty($username)){
-//            //TODO if username is follower
-//            $this->getUserProfil($username, $isFollower,$hwackRepository);
-//        }
+        if(!empty($username)){
+            $user = $userRepository->findOneBy(['username'=>$username]);
+            $isFollower = $this->isFollowerByUsername($user) ;
+            $private = $isAdmin ? $request->query->get('private') ?? false : $isFollower ;
+            $hwacks = $hwackRepository->findBy(['author'=> $user->getId(), 'isPrivate'=>$private],['createdAt'=>'desc'],10);
+
+            return $this->render('user/index.html.twig', [
+                'user' => $user,
+                'hwacks' => $hwacks,
+                "isFollower"=>$isFollower
+
+            ]);
+        }
         if(!empty($page)){
             $allHwacks = $hwackRepository->findBy(['isPrivate'=>$private],['createdAt'=>'desc']);
             $hwacks = $paginator->paginate($allHwacks,$page,100);
@@ -51,11 +62,11 @@ class HwackController extends AbstractController
                 'hwacks' => $hwacks,
             ]);
         }
-//        $allHwacks = $hwackRepository->findBy(['isPrivate'=>$private],['createdAt'=>'desc']);
-//        $hwacks = $paginator->paginate($allHwacks,$request->query->getInt('page', $page),100);
+        $hwacks = $currentUser->getHwacks();
 
-        return $this->render('user/base.html.twig', [
-
+        return $this->render('user/index.html.twig', [
+            'user'=> $currentUser,
+            'hwacks'=> $hwacks
         ]);
     }
 
