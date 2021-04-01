@@ -34,8 +34,8 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('birthDate', DateType::class, [
                 'widget' => 'single_text',
+                'required' => false,
                 'constraints' => [
-                    new NotNull(),
                     new LessThanOrEqual('-14 years', null, 'You should be older than 14 years to register.'),
                 ],
             ])
