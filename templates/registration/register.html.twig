@@ -7,7 +7,7 @@
 	<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
 		<div class="max-w-md w-full space-y-8">
 			<div>
-				<img class="mx-auto h-16 w-auto" src="imgs/logo.svg" alt="Logo">
+				<a href="{{ path('home') }}"><img class="mx-auto h-16 w-auto" src="imgs/logo.svg" alt="Logo"></a>
 				<h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
 					Register
 				</h2>
@@ -51,3 +51,13 @@
 	class="rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:border-indigo-500"
 	{{parent()}}
 {% endblock %}
+
+{% block form_errors %}
+	{%- if errors|length > 0 -%}
+		<ul>
+			{%- for error in errors -%}
+				<li class="flex justify-center items-center m-1 font-medium py-1 px-2 bg-white rounded-md text-red-700 bg-red-100 border border-red-300 ">{{ error.message }}</li>
+			{%- endfor -%}
+		</ul>
+	{%- endif -%}
+{% endblock form_errors %}
