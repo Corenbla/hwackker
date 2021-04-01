@@ -81,6 +81,10 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('captcha', ReCaptchaType::class, [
+                'mapped' => false,
+                'type' => 'invisible' // (invisible, checkbox)
+            ])
         ;
     }
 

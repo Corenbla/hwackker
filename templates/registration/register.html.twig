@@ -4,6 +4,9 @@
 {% endblock %}
 
 {% block body %}
+	<script type="text/javascript" src="{{ asset('js/recaptcha.js') }}"></script>
+	<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?onload=onGoogleReCaptchaApiLoad&render=explicit&hl={{ app.request.locale }}" async defer></script>
+
 	<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
 		<div class="max-w-md w-full space-y-8">
 			<div>
@@ -16,9 +19,9 @@
 				<div class="alert alert-danger" role="alert">{{ flashError }}</div>
 			{% endfor %}
 
-			<div class="rounded-md shadow-sm">
+            <div class="rounded-md shadow-sm">
 
-				{{ form_start(registrationForm) }}
+                {{ form_start(registrationForm) }}
 
 				{{ form_row(registrationForm.username) }}
 				{{ form_row(registrationForm.birthDate) }}
@@ -26,30 +29,30 @@
 				{{ form_row(registrationForm.twitterUrl) }}
 				{{ form_row(registrationForm.email) }}
 				{{ form_row(registrationForm.country) }}
-
+				{{ form_row(registrationForm.captcha) }}
 				{{ form_row(registrationForm.plainPassword, {label: 'Password' }) }}
 				<button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
 					Register
 				</button>
 
-				{{ form_end(registrationForm) }}
-			</div>
-		</div>
-	</div>
+                {{ form_end(registrationForm) }}
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 {% use 'form_div_layout.html.twig' %}
 {% form_theme registrationForm _self %}
 
 {% block form_row %}
-	<div class="mb-2">
-		{{parent()}}
-	</div>
+    <div class="mb-2">
+        {{ parent() }}
+    </div>
 {% endblock %}
 
 {% block widget_attributes %}
-	class="rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:border-indigo-500"
-	{{parent()}}
+    class="rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:border-indigo-500"
+    {{ parent() }}
 {% endblock %}
 
 {% block form_errors %}
