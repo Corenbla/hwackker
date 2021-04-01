@@ -41,7 +41,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
                 ->setEmail($faker->email)
                 ->setIsAdmin($i === 0)
                 ->setCountry(
-                    $this->getReference(CountryFixtures::COUNTRY_REFERENCE . random_int(0,4))
+                    $this->getReference(CountryFixtures::COUNTRY_REFERENCE . rand(0,4))
                 )
             ;
 
